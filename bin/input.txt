@@ -1,0 +1,2 @@
+stars data/stars/ten-star.csv
+neighbors 10 asfd
