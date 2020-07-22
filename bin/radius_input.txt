@@ -1,3 +1,0 @@
-stars data/stars/ten-star.csv
-radius 10000 Sol
-radius 10000 0 0 0
