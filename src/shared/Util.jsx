@@ -3,6 +3,8 @@ const API = process.env.REACT_APP_API || 'http://localhost:3001';
 
 export async function doFetch(method, endpoint, body) {
     console.log(body);
+    debugger;
+
     try {
       const response = await fetch(`${API}${endpoint}`, {
         method,
@@ -13,9 +15,9 @@ export async function doFetch(method, endpoint, body) {
         },
       });
       console.log(response);
-      return await response.json();
+      return  {response: await response.json(), error: null};
     } catch (error) {
       console.error(error);
-      return error;
+      return {response: null, error: error};
     }
   }

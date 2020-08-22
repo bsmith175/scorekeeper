@@ -18,12 +18,18 @@ const commonProps = {
     required: true,
 };
 
-const AddMemberModal = ({ open, handleClickOpen, handleClose, onSave }) => {
+const AddMemberModal = ({ open, handleClickOpen, handleClose, onSave, id }) => {
 
+    const [email, setEmail] = React.useState(null);
+    const [firstName, setFirstName] = React.useState(null);
+    const [lastName, setLastName] = React.useState(null);
+
+    
     function handleSubmit() {
-        console.log(leagueName + scoreType + scoreDirection);
-        doFetch('POST', '/leagues', {name: leagueName, scoreType: scoreType, scoreDirectionUp: scoreDirection === "Highest score wins"}).
-        then(() => {onSave(); handleClose()});
+      debugger;
+      doFetch('POST', '/leagueUser', {email, firstName, lastName, leagueId: id}).then(() => {onSave(); handleClose()});
+      // doFetch('POST', '/leagues', {name: leagueName, scoreType: scoreType, scoreDirectionUp: scoreDirection === "Highest score wins"}).
+      // then(() => {onSave(); handleClose()});
     }
 
 
@@ -32,35 +38,24 @@ const AddMemberModal = ({ open, handleClickOpen, handleClose, onSave }) => {
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="add-member-dialog">Add Member</DialogTitle>
         <FieldContainer>
+          This person will be sent an email inviting them to join the league.
             <TextField
                 {...commonProps}
-                label="League name"
-                onChange={event => setLeagueName(event.target.value)}
-            />
-            <TextField
-                {...commonProps}
-                label="Score type"
-                select
-                value={scoreType}
-                onChange={(event) => {setScoreTypes(event.target.value)}}>
-                {scoreTypes.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                {option.label}
-                </MenuItem>
-            ))}
+                label="First name"
+                value={firstName}
+                onChange={(event) => setFirstName(event.target.value)}>
             </TextField>
             <TextField
                 {...commonProps}
-                label="Score direction"
-                select
-                value={scoreDirection}
-                onChange={(event) => {setScoreDirection(event.target.value)}}>
-                <MenuItem key='highest' value='Highest score wins'>
-                    Highest score wins
-                </MenuItem>
-                <MenuItem key='lowest' value='Lowest score wins'>
-                Lowest score wins
-                </MenuItem>
+                label="Last name"
+                value={lastName}
+                onChange={(event) => setLastName(event.target.value)}>
+            </TextField>
+            <TextField
+                {...commonProps}
+                label="Email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}>
             </TextField>          
         </FieldContainer>
         <DialogActions>
@@ -68,7 +63,7 @@ const AddMemberModal = ({ open, handleClickOpen, handleClose, onSave }) => {
             Cancel
           </Button>
           <Button onClick={handleSubmit} color="primary">
-            Create league
+            Invite
           </Button>
         </DialogActions>
       </Dialog>

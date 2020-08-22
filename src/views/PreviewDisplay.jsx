@@ -9,13 +9,12 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const PreviewDisplay = ({data, getData}) => {
-    console.log(data[0].id);
     return (
         <Container>
             {data && data.map((item) => (
                 <LeaguePreview
                 key={item.id}
-                id={item.id}
+                leagueID={item.id}
                 title={item.name}
                 leaderName={item.leader}
                 leaderScore={item.leaderScore}
@@ -25,6 +24,7 @@ const PreviewDisplay = ({data, getData}) => {
                 isNew={!!!data.LeagueUsers}/>
             ))}
             <LeaguePreview 
+            leagueID={5}
             title='Mini Crossword'
             leaderName='Ashley'
             leaderScore='0:44'

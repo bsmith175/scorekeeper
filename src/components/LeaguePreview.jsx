@@ -6,15 +6,15 @@ import theme from '../shared/Theme';
 import StandardText from './shared/StandardText';
 import { Link, Redirect } from 'react-router-dom';
 
-const LeaguePreview = ({id, title, leaderName, isNew, leaderScore, allTimeName, allTimeScore, updated }) => {
+const LeaguePreview = ({leagueID, title, leaderName, isNew, leaderScore, allTimeName, allTimeScore, updated }) => {
     const [redirect, setRedirect] = React.useState(false);
-    console.log(id);
+    console.log(leagueID);
 
     return (
             <PreviewCard 
             onClick={() => setRedirect(true)}
             >
-                {redirect && <Redirect to={`/league/${id}`}/>}
+                {redirect && <Redirect to={`/league/${leagueID}`}/>}
                 <Header>
                     <H2>
                         {title}

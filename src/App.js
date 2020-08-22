@@ -3,26 +3,25 @@ import AppHeader from './components/AppHeader';
 import { createGlobalStyle } from 'styled-components';
 import { Route } from 'react-router-dom';
 import { ImplicitCallback } from '@okta/okta-react';
-import PreviewDisplay from './views/LeagueDisplay';
+import PreviewDisplay from './views/PreviewDisplay';
 import { doFetch } from './shared/Util';
 import LeaguePage from './views/LeaguePage';
-
+import useQuery from './components/Hooks/useQuery';
+import { H2 } from './shared/ViewUtil';
 
 const App = () => {
-  const [data, setData] = React.useState();
-    
-    async function getData() {
-        setData(await doFetch('GET', '/leagues'));
-    };
 
-    React.useEffect(() => {
-        getData();
-    }, []);
-
-    console.log(data);
+  const {data, loading, error, reQuery} = useQuery('/leagues');
 
   function renderPreviewDisplay() {
-    return data && <PreviewDisplay data={data} getData={getData}/>
+
+    if (error) {
+      return <H2>Error</H2>;
+    }
+    if (loading) {
+      return <H2>Loading</H2>;
+    }
+    return data && <PreviewDisplay data={data} getData={() => reQuery()}/>
   }
 
   function renderLeaguePage() {

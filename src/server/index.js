@@ -4,102 +4,55 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
-const epilogue = require('epilogue');
 const OktaJwtVerifier = require('@okta/jwt-verifier');
-
+const {database, League, User, LeagueUser, Score } = require('./DataModel');
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
 
-const database = new Sequelize({
-  dialect: 'sqlite',
-  storage: './test.sqlite',
-});
 
+app.get('/leagues', async function (req, res) {
+    const allLeagues = await League.findAll();
+    res.send(JSON.stringify(allLeagues));
+ })
 
-const User = database.define(('user'), {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-    },
-    
-    firstName: {
-        type: Sequelize.STRING,
-        allowNull: false
-    } ,
-    lastName: Sequelize.STRING,
-});
-
-
-const Score = database.define('score', {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-    },
-    date: Sequelize.DATE,
-    value: Sequelize.STRING,
-});
-
-const LeagueUser = database.define('leagueUser', {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-    },
-
-    user: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: User,
-            key: 'id'
+ app.get('/leagues/:id', async function (req, res) {
+     const { id: leagueId } = req.params;
+    const retLeague = await League.findAll({
+        where: {
+            id: retLeague,
         }
-    },
+    });
+    res.send(JSON.stringify(allLeagues));
+ })
 
-    score: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: Score,
-            key: 'id',
-        }
-    }
+ app.post('/leagues', async function (req, res) {
+    const newLeague = await League.create(req.body);
+    res.send(JSON.stringify(newLeague));
+ })
 
-});
+ app.post('/leagueUser', async function (req, res) {
+     const {firstName, lastName, email, leagueId} = req.body;
+     const newLeagueUser = await LeagueUser.create();
+     newLeagueUser.createUser({firstName, lastName, email});
+     const league = await League.findAll({where: {id: leagueId}});
+     league[0].addLeagueUser(newLeagueUser);
+     newLeagueUser.setLeague(league[0]);
+     res.send(JSON.stringify(newLeagueUser));
 
-const League = database.define('league', {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-    },
+ })
+ 
+// epilogue.resource({
+//     model: League,
+//     endpoints: ['/leagues', '/leagues/:id'],
+//   });
 
-    name: {
-        type: Sequelize.STRING,
-        allowNull: false
-    } ,
-    scoreType: Sequelize.STRING,
-
-    scoreDirectionUp: Sequelize.BOOLEAN,
-
-    LeagueUsers: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: LeagueUser,
-            key: 'id'
-        }
-    }
-
-});
-
-epilogue.initialize({ app, sequelize: database });
-
-epilogue.resource({
-    model: League,
-    endpoints: ['/leagues', '/leagues/:id'],
-  });
+//   epilogue.resource({
+//     model: User,
+//     endpoints: ['/user', '/user/:id'],
+//   });
 
 
 
