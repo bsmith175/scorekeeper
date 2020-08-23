@@ -1,12 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Card from '../components/shared/Card';
 import LeaguePreview from '../components/LeaguePreview';
 import CreateLeagueCard from '../components/CreateLeagueCard';
-import { Modal } from '@material-ui/core';
-import { doFetch } from '../shared/Util';
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+
 
 const PreviewDisplay = ({data, getData}) => {
     return (

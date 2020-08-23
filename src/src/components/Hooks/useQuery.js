@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { doFetch } from '../../shared/Util';
+import { doFetch } from '../../Util/Util';
 
 
 export default function useQuery(endpoint) {

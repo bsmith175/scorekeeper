@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Card from '../components/shared/Card';
-import {H2, PreviewCard, ThinBorder} from '../shared/ViewUtil'
-import theme from '../shared/Theme';
+import {H2, PreviewCard, ThinBorder} from '../Util/ViewUtil'
+import theme from '../Util/Theme';
 import StandardText from './shared/StandardText';
 import { Link, Redirect } from 'react-router-dom';
 

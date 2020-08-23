@@ -2,17 +2,23 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Link, Redirect, useParams } from 'react-router-dom';
 import { Button } from '@material-ui/core';
-import { H2 } from '../shared/ViewUtil';
+import { H2 } from '../Util/ViewUtil';
 import StandardText from '../components/shared/StandardText';
 import AddMemberModal from './Modals/AddMemberModal';
+import useQuery from '../components/Hooks/useQuery';
 
-const LeaguePage = ({ data }) => {
+const LeaguePage = () => {
 
     const [redirect, setRedirect] = React.useState(false);
     const [isModalShowing, setIsModalShowing] = React.useState(false);
 
     let { id } = useParams();
-    const leagueData = data && data[id - 1];
+    const {data, loading, error, reQuery} = useQuery(`/leagues/${id}`);
+
+    console.log(data);
+    if (loading) {
+        return (<H2>Loading</H2>);
+    }
 
     return (
         <Container>

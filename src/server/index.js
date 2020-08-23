@@ -14,18 +14,23 @@ app.use(bodyParser.json());
 
 
 app.get('/leagues', async function (req, res) {
-    const allLeagues = await League.findAll();
+    const allLeagues = await League.findAll({include: {all: true, nested: true}});
     res.send(JSON.stringify(allLeagues));
  })
 
  app.get('/leagues/:id', async function (req, res) {
      const { id: leagueId } = req.params;
-    const retLeague = await League.findAll({
+    const retLeague = (await League.findAll({
         where: {
-            id: retLeague,
+            id: leagueId,
+        },
+        include: {
+            all: true,
+            nested: true,
         }
-    });
-    res.send(JSON.stringify(allLeagues));
+    }))[0];
+
+    res.send(JSON.stringify(retLeague));
  })
 
  app.post('/leagues', async function (req, res) {

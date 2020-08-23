@@ -6,10 +6,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { H2 } from '../../shared/ViewUtil';
+import { H2 } from '../../Util/ViewUtil';
 import styled from 'styled-components';
 import { MenuItem } from '@material-ui/core';
-import { doFetch } from '../../shared/Util';
+import { doFetch } from '../../Util/Util';
 
 const commonProps = {
     autoFocus: true,
