@@ -32,3 +32,7 @@ export async function doFetch(method, endpoint, body) {
     }
   });
 
+  export const getAllDatesWithScore = (league) => {
+    
+  }
+
