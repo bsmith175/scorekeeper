@@ -1,4 +1,6 @@
 
+export const FORMAT_DATE = 'yyyy-MM-dd';
+
 const API = process.env.REACT_APP_API || 'http://localhost:3001';
 
 export async function doFetch(method, endpoint, body) {
@@ -21,3 +23,12 @@ export async function doFetch(method, endpoint, body) {
       return {response: null, error: error};
     }
   }
+
+  //returns positive number if score1 beats score2, 0 if scores are equal, negative 
+  //number otherwise
+  export const scoreComparator = ((scoreDirectionUp) => {
+    return function(score1, score2) {
+      return scoreDirectionUp ? score1 - score2 :  score2 - score1;
+    }
+  });
+

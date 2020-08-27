@@ -1,13 +1,12 @@
 import * as React from 'react';
-import AppHeader from './components/AppHeader';
 import { createGlobalStyle } from 'styled-components';
 import { Route } from 'react-router-dom';
 import { ImplicitCallback } from '@okta/okta-react';
-import PreviewDisplay from './views/PreviewDisplay';
-import { doFetch } from './shared/Util';
-import LeaguePage from './views/LeaguePage';
-import useQuery from './components/Hooks/useQuery';
-import { H2 } from './shared/ViewUtil';
+import useQuery from './src/components/Hooks/useQuery';
+import { H2 } from './src/Util/ViewUtil';
+import PreviewDisplay from './src/views/PreviewDisplay';
+import LeaguePage from './src/views/League/LeaguePage';
+import AppHeader from './src/components/AppHeader';
 
 const App = () => {
 

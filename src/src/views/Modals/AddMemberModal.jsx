@@ -26,10 +26,8 @@ const AddMemberModal = ({ open, handleClickOpen, handleClose, onSave, id }) => {
 
     
     function handleSubmit() {
-      debugger;
       doFetch('POST', '/leagueUser', {email, firstName, lastName, leagueId: id}).then(() => {onSave(); handleClose()});
-      // doFetch('POST', '/leagues', {name: leagueName, scoreType: scoreType, scoreDirectionUp: scoreDirection === "Highest score wins"}).
-      // then(() => {onSave(); handleClose()});
+
     }
 
 

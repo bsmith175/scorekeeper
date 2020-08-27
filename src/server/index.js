@@ -41,11 +41,22 @@ app.get('/leagues', async function (req, res) {
  app.post('/leagueUser', async function (req, res) {
      const {firstName, lastName, email, leagueId} = req.body;
      const newLeagueUser = await LeagueUser.create();
-     newLeagueUser.createUser({firstName, lastName, email});
-     const league = await League.findAll({where: {id: leagueId}});
-     league[0].addLeagueUser(newLeagueUser);
-     newLeagueUser.setLeague(league[0]);
+     await newLeagueUser.createUser({firstName, lastName, email});
+     const league = await League.find({where: {id: leagueId}});
+     await league.addLeagueUser(newLeagueUser);
      res.send(JSON.stringify(newLeagueUser));
+
+ })
+
+ app.post('/score', async function (req, res) {
+     const {leagueId, leagueUserId, score, date, scoreType} = req.body;
+     console.log(leagueUserId);
+     console.log(score);
+     console.log(date);
+     const newScore = await Score.create({date, scoreType, value: score});
+     const user = await LeagueUser.find({where: {id: leagueUserId}});
+     await user.addScore(newScore);
+     res.send(JSON.stringify(newScore));
 
  })
  
@@ -63,7 +74,7 @@ app.get('/leagues', async function (req, res) {
 
 const port = process.env.SERVER_PORT || 3001;
 
-database.sync({alter: true}).then(() => {
+database.sync({alter: false}).then(() => {
   app.listen(port, () => {
     console.log(`Listening on port ${port}`);
   });

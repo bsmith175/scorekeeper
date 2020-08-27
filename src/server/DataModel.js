@@ -31,6 +31,8 @@ const Score = database.define('score', {
     },
     date: Sequelize.DATE,
     value: Sequelize.STRING,
+    // either 'points or 'time'
+    scoreType: Sequelize.STRING,
 
 });
 
@@ -62,8 +64,9 @@ const League = database.define('league', {
         type: Sequelize.STRING,
         allowNull: false
     } ,
+    // either 'points' or 'time'
     scoreType: Sequelize.STRING,
-
+    //if true, highest score wins
     scoreDirectionUp: Sequelize.BOOLEAN,
 
 });

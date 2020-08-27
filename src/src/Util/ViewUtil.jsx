@@ -15,6 +15,12 @@ export const H2 = styled(StandardText)`
     color: ${p => p.color};
 `;
 
+export const ScrollBox = styled.div`
+    overflow: scroll;
+    height: ${p => p.height};
+    width: ${p => p.width};
+    
+`;
 const PreviewCardInternal = styled(Card)`
     width: 300px;
     padding: 8px;

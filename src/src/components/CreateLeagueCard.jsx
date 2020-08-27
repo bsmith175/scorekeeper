@@ -1,17 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Card from '../components/shared/Card';
-import {H2, PreviewCard, ThinBorder} from '../Util/ViewUtil'
-import theme from '../Util/Theme';
-import StandardText from './shared/StandardText';
 import AddIcon from '@material-ui/icons/Add';
-import CreateNewLeagueModal from '../views/Modals/CreateNewLeagueModal';
+import { H2, PreviewCard } from '../Util/ViewUtil';
+import CreateNewleagueModal from '../views/Modals/CreateNewLeagueModal';
 
 const CreateLeagueCard = ({onSave}) => {
     const [isModalShowing, setIsModalShowing] = React.useState(false);
     return (
         <>
-            <CreateNewLeagueModal onSave={onSave} open={isModalShowing} handleClose={() => setIsModalShowing(false)}/>
+            <CreateNewleagueModal onSave={onSave} open={isModalShowing} handleClose={() => setIsModalShowing(false)}/>
             <PreviewCard onClick={() => {setIsModalShowing(true)}}>
                 <CenterDiv>
                     <AddIcon/>

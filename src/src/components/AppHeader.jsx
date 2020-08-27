@@ -1,10 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import theme from '../shared/Theme';
-import {H1} from '../shared/ViewUtil'
 import LoginButton from './LoginButton'
 import { Link } from 'react-router-dom';
-
+import {H1} from './../Util/ViewUtil'
+import theme from '../Util/Theme';
 const AppHeader = props => {
     return (
         <Container>
