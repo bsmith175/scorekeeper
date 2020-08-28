@@ -8,6 +8,8 @@ import AddMemberModal from '../Modals/AddMemberModal';
 import AddScoreModal from '../Modals/AddScoreModal';
 import useQuery from '../../components/Hooks/useQuery';
 import Card from '../../components/shared/Card';
+import { getAllDatesWithScore } from '../../Util/Util';
+import ScoreTable from './ScoreTable';
 
 const LeaguePage = () => {
 
@@ -22,6 +24,8 @@ const LeaguePage = () => {
         return (<H2>Loading</H2>);
     }
 
+    
+    
     return (
         data && 
         <Container>
@@ -34,12 +38,7 @@ const LeaguePage = () => {
             <Button onClick={() => {setIsScoreModalShowing(true)}}>
                 <StandardText>Enter your score</StandardText>
             </Button>
-            <Card width='100px' height='100px'>
-                <ScrollBox>
-
-                </ScrollBox>
-            </Card>
- 
+            <ScoreTable league={data}/>
         </Container>
 
     )

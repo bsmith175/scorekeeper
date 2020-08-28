@@ -34,7 +34,8 @@ export const ThinBorder = styled.div`
     border-bottom-width: 1px;
     border-top-width: 0px;
     border-color: ${theme.gray30};
-    margin: ${p => p.margin ?? 0}
+    margin: ${p => p.margin ?? 0};
+    width: ${p => p.width ? p.width : null};
 `;
 
 export const PreviewCard = withHover(PreviewCardInternal);

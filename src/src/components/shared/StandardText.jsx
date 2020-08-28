@@ -2,8 +2,9 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 const StandardText = props => {
+    const { color } = props;
     return (
-        <StandardStyles style={props.style} className={props.className}>
+        <StandardStyles color={color} style={props.style} className={props.className}>
             {props.children}
         </StandardStyles>
     )
@@ -21,5 +22,6 @@ const StandardStyles = styled.text`
     -moz-osx-font-smoothing: grayscale;
     font-size: 16px;
     line-height: 20px;
+    ${p => !p.color ? null : `color: ${p.color}`}
 `;
 

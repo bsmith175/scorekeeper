@@ -10,7 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { H2 } from '../../Util/ViewUtil';
 import styled from 'styled-components';
 import { MenuItem } from '@material-ui/core';
-import { doFetch, FORMAT_DATE } from '../../Util/Util';
+import { doFetch, FORMAT_DATE, getAllDatesWithScore } from '../../Util/Util';
 import format from 'date-fns/format';
 import { formatISO } from 'date-fns';
 import { getLeagueUserFromEmail } from '../../Util/UserUtil';
@@ -38,8 +38,7 @@ const AddScoreModal = ({ open, handleClickOpen, handleClose, onSave, league }) =
     async function handleSubmit() {
         doFetch('POST', '/score', {scoreType: league.scoreType, score, date, leagueId: league.id, leagueUserId: getLeagueUserId()}).then(() => {onSave(); handleClose()});
     }
-
-
+  
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

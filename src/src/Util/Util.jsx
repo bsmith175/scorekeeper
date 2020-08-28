@@ -1,12 +1,10 @@
+import { compareAsc } from "date-fns";
 
 export const FORMAT_DATE = 'yyyy-MM-dd';
 
 const API = process.env.REACT_APP_API || 'http://localhost:3001';
 
 export async function doFetch(method, endpoint, body) {
-    console.log(body);
-    debugger;
-
     try {
       const response = await fetch(`${API}${endpoint}`, {
         method,
@@ -16,10 +14,8 @@ export async function doFetch(method, endpoint, body) {
           accept: 'application/json',
         },
       });
-      console.log(response);
       return  {response: await response.json(), error: null};
     } catch (error) {
-      console.error(error);
       return {response: null, error: error};
     }
   }
@@ -32,7 +28,37 @@ export async function doFetch(method, endpoint, body) {
     }
   });
 
+  //returns a map with key as a date string and value as a Map with key: leagueUser id and 
+  // value: the users best score for that date 
   export const getAllDatesWithScore = (league) => {
-    
+    if (!league) return null;
+    const dates = new Map();
+    const leagueUsers = [...league.leagueUsers];
+    leagueUsers.flatMap((leagueUser) => 
+    leagueUser.scores.map((score) => score.date)).filter((date) => {
+      if (dates.has(date)) {
+        return false;
+      } else {
+        dates.set(date, null);
+        return true;
+      }
+   });
+   for (const leagueUser in leagueUsers) {
+     for (const score in leagueUser.scores) {
+        const userMap = dates.get(score.date);
+        if (userMap === null) {
+          userMap = new Map();
+          userMap.set(leagueUser.id, score);
+          dates.set(score.date, userMap);
+        } else {
+          const bestScore = userMap.get(leagueUser.id);
+          if (scoreComparator(score.value, bestScore.value) > 0) {
+            userMap.set(leagueUser.id, score);
+          }
+        }
+     }
+   }
+   return dates;
   }
+
 
