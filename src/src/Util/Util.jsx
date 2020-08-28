@@ -1,4 +1,4 @@
-import { compareAsc } from "date-fns";
+import { compareAsc, format } from "date-fns";
 
 export const FORMAT_DATE = 'yyyy-MM-dd';
 
@@ -34,31 +34,36 @@ export async function doFetch(method, endpoint, body) {
     if (!league) return null;
     const dates = new Map();
     const leagueUsers = [...league.leagueUsers];
-    leagueUsers.flatMap((leagueUser) => 
-    leagueUser.scores.map((score) => score.date)).filter((date) => {
-      if (dates.has(date)) {
+   debugger;
+    leagueUsers.forEach((leagueUser) => 
+    leagueUser.scores.forEach((score) => {
+      if (dates.has(score.date)) {
         return false;
       } else {
-        dates.set(date, null);
+        dates.set(score.date, null);
         return true;
       }
-   });
-   for (const leagueUser in leagueUsers) {
-     for (const score in leagueUser.scores) {
-        const userMap = dates.get(score.date);
+   }));
+   leagueUsers.forEach((leagueUser) => {
+      leagueUser.scores.forEach((score) => {
+        let userMap = dates.get(score.date);
         if (userMap === null) {
           userMap = new Map();
           userMap.set(leagueUser.id, score);
           dates.set(score.date, userMap);
         } else {
           const bestScore = userMap.get(leagueUser.id);
-          if (scoreComparator(score.value, bestScore.value) > 0) {
+          if (!bestScore || scoreComparator(score.value, bestScore.value) > 0) {
             userMap.set(leagueUser.id, score);
           }
         }
-     }
-   }
+     })
+  })
    return dates;
   }
 
 
+export function formatIgnoreTimeZone(date, formatString) {
+  const dateNew = new Date(date.valueOf() + date.getTimezoneOffset() * 60 * 1000);
+  return format(dateNew, formatString);
+}

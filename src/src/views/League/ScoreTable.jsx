@@ -7,7 +7,7 @@ import StandardText from '../../components/shared/StandardText';
 import AddMemberModal from '../Modals/AddMemberModal';
 import useQuery from '../../components/Hooks/useQuery';
 import Card from '../../components/shared/Card';
-import { getAllDatesWithScore } from '../../Util/Util';
+import { getAllDatesWithScore, formatIgnoreTimeZone } from '../../Util/Util';
 import theme from '../../Util/Theme';
 import { format, compareAsc } from 'date-fns';
 import { parseISO } from 'date-fns/esm';
@@ -20,6 +20,7 @@ const ScoreTable = ({ league }) => {
     const dateMap = getAllDatesWithScore(league);
     const borderWidth = `${COLUMN_WIDTH * (1 + dateMap.size)}px`; 
     const dates = Array.from(dateMap.keys()).sort((a, b) => compareAsc(new Date(b), new Date(a)));
+    console.log(dateMap);
     const Header = () => (
         <RowContainer>
             <RowSection key='1'>
@@ -28,7 +29,7 @@ const ScoreTable = ({ league }) => {
             {dates.map((date) => {
                 return (
                 <RowSection key={date}>
-                    <StandardText color={theme.gray50}>{format(parseISO(date), 'MMM d')}</StandardText>
+                    <StandardText color={theme.gray50}>{formatIgnoreTimeZone(parseISO(date), 'MMM d')}</StandardText>
                 </RowSection>)
             })}
         </RowContainer>
@@ -38,8 +39,18 @@ const ScoreTable = ({ league }) => {
             league.leagueUsers.map((leagueUser) => (
                <React.Fragment key={leagueUser.id}> 
                     <RowContainer>
-                        <StandardText>{leagueUser.user.firstName}</StandardText> 
-                    </RowContainer>
+                       <RowSection>
+                            <StandardText>{leagueUser.user.firstName}</StandardText>  
+                       </RowSection> 
+                    {dates.map((date) => {
+                        debugger;
+                        return (
+                            <RowSection>
+                                <StandardText>{dateMap.get(date).get(leagueUser.id)?.value ?? '--'}</StandardText>
+                            </RowSection>
+                        )
+                   })}
+                   </RowContainer>
                     <ThinBorder width={borderWidth}/>
                </React.Fragment>
             ))
