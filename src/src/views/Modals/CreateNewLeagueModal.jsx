@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { H2 } from '../../Util/ViewUtil';
 import styled from 'styled-components';
 import { MenuItem } from '@material-ui/core';
-import { doFetch } from '../../Util/Util';
+import { doFetch, scoreTypes } from '../../Util/Util';
 
 const commonProps = {
     autoFocus: true,
@@ -19,26 +19,15 @@ const commonProps = {
 };
 
 const CreateNewleagueModal = ({ open, handleClickOpen, handleClose, onSave }) => {
-    const [scoreType, setScoreTypes] = React.useState(null);
+    const [selectedScoreType, setScoreTypes] = React.useState(null);
     const [scoreDirection, setScoreDirection] = React.useState(null);
     const [leagueName, setLeagueName] = React.useState(null);
 
     function handleSubmit() {
-        console.log(leagueName + scoreType + scoreDirection);
-        doFetch('POST', '/leagues', {name: leagueName, scoreType: scoreType, scoreDirectionUp: scoreDirection === "Highest score wins"}).
+        console.log(leagueName + selectedScoreType + scoreDirection);
+        doFetch('POST', '/leagues', {name: leagueName, scoreType: selectedScoreType, scoreDirectionUp: scoreDirection === "Highest score wins"}).
         then(() => {onSave(); handleClose()});
     }
-    const scoreTypes = [
-        {   
-            value: 'time',
-            label: 'Time'
-        },
-        {
-            value: 'points',
-            label: 'Points'
-        }
-    ];
-
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -48,6 +37,7 @@ const CreateNewleagueModal = ({ open, handleClickOpen, handleClose, onSave }) =>
             Enter league details:
           </DialogContentText>
             <TextField
+                value={leagueName || ''}
                 {...commonProps}
                 label="League name"
                 onChange={event => setLeagueName(event.target.value)}
@@ -56,19 +46,21 @@ const CreateNewleagueModal = ({ open, handleClickOpen, handleClose, onSave }) =>
                 {...commonProps}
                 label="Score type"
                 select
-                value={scoreType}
+                value={selectedScoreType || ''}
                 onChange={(event) => {setScoreTypes(event.target.value)}}>
-                {scoreTypes.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                {option.label}
+                <MenuItem key={scoreTypes.POINTS} value={scoreTypes.POINTS}>
+                Points
                 </MenuItem>
-            ))}
+                <MenuItem key={scoreTypes.TIME} value={scoreTypes.TIME}>
+                Time
+                </MenuItem>
+            ))
             </TextField>
             <TextField
                 {...commonProps}
                 label="Score direction"
                 select
-                value={scoreDirection}
+                value={scoreDirection || ''}
                 onChange={(event) => {setScoreDirection(event.target.value)}}>
                 <MenuItem key='highest' value='Highest score wins'>
                     Highest score wins

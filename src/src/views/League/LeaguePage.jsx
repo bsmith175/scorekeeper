@@ -29,8 +29,8 @@ const LeaguePage = () => {
     return (
         data && 
         <Container>
-            <AddMemberModal open={isMemberModalShowing} onSave={() => {}} handleClose={() => setIsMemberModalShowing(false)} id={id}/>
-            <AddScoreModal league={data} open={isScoreModalShowing} onSave={() => {}} handleClose={() => setIsScoreModalShowing(false)} id={id}/>
+            <AddMemberModal open={isMemberModalShowing} onSave={() => {reQuery()}} handleClose={() => setIsMemberModalShowing(false)} id={id}/>
+            <AddScoreModal league={data} open={isScoreModalShowing} onSave={() => {reQuery()}} handleClose={() => setIsScoreModalShowing(false)} id={id}/>
 
             <Button onClick={() => {setIsMemberModalShowing(true)}}>
                 <StandardText>+ Add Member</StandardText>

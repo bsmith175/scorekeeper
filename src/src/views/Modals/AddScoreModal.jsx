@@ -10,7 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { H2 } from '../../Util/ViewUtil';
 import styled from 'styled-components';
 import { MenuItem } from '@material-ui/core';
-import { doFetch, FORMAT_DATE, getAllDatesWithScore } from '../../Util/Util';
+import { doFetch, FORMAT_DATE, getAllDatesWithScore, scoreTypes, FORMAT_TIME_SCORE } from '../../Util/Util';
 import format from 'date-fns/format';
 import { formatISO } from 'date-fns';
 import { getLeagueUserFromEmail } from '../../Util/UserUtil';
@@ -30,15 +30,57 @@ const AddScoreModal = ({ open, handleClickOpen, handleClose, onSave, league }) =
     const curDate = format(new Date(), FORMAT_DATE);
     const [date, setDate] = React.useState(curDate);
 
+    //used for time score only
+    const [min, setMin] = React.useState(null);
+    const [sec, setSec] = React.useState(null);
+    const isTimeScore = league.scoreType === scoreTypes.TIME;
     function getLeagueUserId() {
-      debugger;
       return getLeagueUserFromEmail(email, league).id;
     }
     
     async function handleSubmit() {
         doFetch('POST', '/score', {scoreType: league.scoreType, score, date, leagueId: league.id, leagueUserId: getLeagueUserId()}).then(() => {onSave(); handleClose()});
     }
-  
+    
+    const ScoreInput = () => {
+      function createScore(minutes, seconds) {
+        setMin(minutes ?? min);
+        setSec(seconds ?? sec);
+        const time = new Date();
+        if ((!!min || minutes) && (!!sec || seconds)) {
+          time.setHours(0, parseInt(minutes ?? min), parseInt(seconds ?? sec));
+          console.log(format(time, FORMAT_TIME_SCORE));
+          setScore(format(time, FORMAT_TIME_SCORE));
+        }
+      }
+      if (isTimeScore) {
+        return (
+          <TimeScoreRow>
+            <TextField
+                {...commonProps}
+                label="Minutes"
+                value={min || ''}
+                onChange={(event) => createScore(event.target.value, null)}>
+            </TextField> 
+            <TextField
+                {...commonProps}
+                label="Seconds"
+                value={sec || ''}
+                onChange={(event) => createScore(null, event.target.value)}>
+            </TextField> 
+          </TimeScoreRow>
+        ) 
+      } else {
+        return (
+            <TextField
+                {...commonProps}
+                label="Score"
+                value={score || ''}
+                onChange={(event) => setScore(event.target.value)}>
+            </TextField> 
+        )
+      }
+    }
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -46,7 +88,6 @@ const AddScoreModal = ({ open, handleClickOpen, handleClose, onSave, league }) =
         <FieldContainer>
             <Autocomplete
               id="auto-complete"
-              autocomplete
               options={league.leagueUsers}
               getOptionLabel={(option) => option.user.email}
               onChange={(event, values) => setEmail(values.user.email)}
@@ -54,14 +95,8 @@ const AddScoreModal = ({ open, handleClickOpen, handleClose, onSave, league }) =
               <TextField {...params} 
                 {...commonProps}
                 label="Your email" 
-                value={email}/>}
+                value={email || ''}/>}
             />
-            <TextField
-                {...commonProps}
-                label="Score"
-                value={score}
-                onChange={(event) => setScore(event.target.value)}>
-            </TextField> 
             <TextField
               {...commonProps}
               label="Date"
@@ -69,8 +104,8 @@ const AddScoreModal = ({ open, handleClickOpen, handleClose, onSave, league }) =
               defaultValue={curDate}
               onChange={(event) => setDate(event.target.value)}
               >
-              
               </TextField>       
+            <ScoreInput/>
         </FieldContainer>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -87,28 +122,13 @@ const AddScoreModal = ({ open, handleClickOpen, handleClose, onSave, league }) =
 
 export default AddScoreModal;
 
-const MemberFields = ({index}) => {
-    const commonProps = {
-        autoFocus: true,
-        margin: 'dense',
-        fullWidth: true
-    }
-    return (
-        <FieldContainer>
-            <H2>Player {index}</H2>
-            <TextField
-                {...commonProps}
-                label="Name"/>
-            <TextField
-            {...commonProps}
-            label="Email Address"
-          />
-        </FieldContainer>
-
-    )
-}
 
 const FieldContainer = styled(DialogContent)`
     width: 400px;
     margin-top: 16px;
+`;
+
+const TimeScoreRow = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
