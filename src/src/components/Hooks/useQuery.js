@@ -8,16 +8,23 @@ export default function useQuery(endpoint) {
         {data: null, loading: null, error: null}
       );
 
-    function query() {
+    function reQuery() {
         setState({loading: true});
         doFetch('GET', endpoint).then((value) => {
-
-            setState({data: value.response, loading: false, error: value.error})
+        setState({data: value.response, loading: false, error: value.error})
         });
     }
     React.useEffect(() => {
-        query();
+        let isMounted = true;
+
+        if (isMounted) setState({loading: true});
+
+        doFetch('GET', endpoint).then((value) => {
+            if (isMounted) setState({data: value.response, loading: false, error: value.error})
+        });
+        //cleanup function
+        return  () => isMounted = false;
     }, []);
 
-    return {...state, reQuery: query};
+    return {...state, reQuery: reQuery};
 }

@@ -40,19 +40,19 @@ const AddMemberModal = ({ open, handleClickOpen, handleClose, onSave, id }) => {
             <TextField
                 {...commonProps}
                 label="First name"
-                value={firstName}
+                value={firstName || ''}
                 onChange={(event) => setFirstName(event.target.value)}>
             </TextField>
             <TextField
                 {...commonProps}
                 label="Last name"
-                value={lastName}
+                value={lastName || ''}
                 onChange={(event) => setLastName(event.target.value)}>
             </TextField>
             <TextField
                 {...commonProps}
                 label="Email"
-                value={email}
+                value={email || ''}
                 onChange={(event) => setEmail(event.target.value)}>
             </TextField>          
         </FieldContainer>
@@ -71,26 +71,6 @@ const AddMemberModal = ({ open, handleClickOpen, handleClose, onSave, id }) => {
 
 export default AddMemberModal;
 
-const MemberFields = ({index}) => {
-    const commonProps = {
-        autoFocus: true,
-        margin: 'dense',
-        fullWidth: true
-    }
-    return (
-        <FieldContainer>
-            <H2>Player {index}</H2>
-            <TextField
-                {...commonProps}
-                label="Name"/>
-            <TextField
-            {...commonProps}
-            label="Email Address"
-          />
-        </FieldContainer>
-
-    )
-}
 
 const FieldContainer = styled(DialogContent)`
     width: 400px;

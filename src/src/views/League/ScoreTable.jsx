@@ -39,13 +39,13 @@ const ScoreTable = ({ league }) => {
             league.leagueUsers.map((leagueUser) => (
                <React.Fragment key={leagueUser.id}> 
                     <RowContainer>
-                       <RowSection>
+                       <RowSection key={'name'}>
                             <StandardText>{leagueUser.user.firstName}</StandardText>  
                        </RowSection> 
                     {dates.map((date) => {
                         debugger;
                         return (
-                            <RowSection>
+                            <RowSection key={date}>
                                 <StandardText>{dateMap.get(date).get(leagueUser.id)?.value ?? '--'}</StandardText>
                             </RowSection>
                         )
