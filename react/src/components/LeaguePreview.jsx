@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Card from '../components/shared/Card';
+import Card from './shared/Card';
 import {H2, PreviewCard, ThinBorder} from '../Util/ViewUtil'
 import theme from '../Util/Theme';
 import StandardText from './shared/StandardText';

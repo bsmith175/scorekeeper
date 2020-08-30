@@ -6,12 +6,14 @@ const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 const OktaJwtVerifier = require('@okta/jwt-verifier');
 const {database, League, User, LeagueUser, Score } = require('./DataModel');
+const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
 
+app.use(express.static(path.resolve(__dirname, '../react/build')));
 
 app.get('/leagues', async function (req, res) {
     const allLeagues = await League.findAll({include: {all: true, nested: true}});
@@ -73,6 +75,11 @@ app.get('/leagues', async function (req, res) {
 
 
 const port = process.env.PORT || 3001;
+
+
+app.get('*', function(req, res) {
+  response.sendFile(path.resolve(__dirname, '../react/build', 'index.html'));
+});
 
 database.sync({alter: false}).then(() => {
   app.listen(port, () => {
