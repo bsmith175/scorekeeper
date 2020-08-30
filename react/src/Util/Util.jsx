@@ -5,7 +5,7 @@ export const FORMAT_DATE = 'yyyy-MM-dd';
 
 // const API = process.env.REACT_APP_API || 'http://localhost:3001';
 const PORT = process.env.PORT || '3001';
-const API = 'http://localhost:' + PORT;
+const API = 'https://crossword.herokuapp.com';
 
 export async function doFetch(method, endpoint, body) {
     try {
