@@ -4,7 +4,6 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
-const OktaJwtVerifier = require('@okta/jwt-verifier');
 const {database, League, User, LeagueUser, Score } = require('./DataModel');
 const path = require('path');
 
