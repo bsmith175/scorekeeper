@@ -3,7 +3,9 @@ import { compareAsc, format } from "date-fns";
 export const FORMAT_TIME_SCORE = 'm ss';
 export const FORMAT_DATE = 'yyyy-MM-dd';
 
-const API = process.env.REACT_APP_API || 'http://localhost:3001';
+// const API = process.env.REACT_APP_API || 'http://localhost:3001';
+const PORT = process.env.PORT || '3001';
+const API = 'http://localhost:' + PORT;
 
 export async function doFetch(method, endpoint, body) {
     try {

@@ -72,7 +72,7 @@ app.get('/leagues', async function (req, res) {
 
 
 
-const port = process.env.SERVER_PORT || 3001;
+const port = process.env.PORT || 3001;
 
 database.sync({alter: false}).then(() => {
   app.listen(port, () => {
