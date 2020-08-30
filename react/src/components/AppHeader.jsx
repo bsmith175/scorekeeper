@@ -12,8 +12,6 @@ const AppHeader = props => {
                     Home
                 </H1>
             </Link>
-
-            <LoginButton/>
         </Container>
     );
 };
