@@ -16,7 +16,6 @@ import { formatISO } from 'date-fns';
 import { getLeagueUserFromEmail } from '../../Util/UserUtil';
 
 const commonProps = {
-    autoFocus: true,
     margin: 'dense',
     fullWidth: true,
     required: true,
@@ -31,28 +30,27 @@ const AddScoreModal = ({ open, handleClickOpen, handleClose, onSave, league }) =
     const [date, setDate] = React.useState(curDate);
 
     //used for time score only
-    const [min, setMin] = React.useState(null);
-    const [sec, setSec] = React.useState(null);
+    const [min, setMin] = React.useState('0');
+    const [sec, setSec] = React.useState('0');
     const isTimeScore = league.scoreType === scoreTypes.TIME;
     function getLeagueUserId() {
       return getLeagueUserFromEmail(email, league).id;
     }
     
     async function handleSubmit() {
-        doFetch('POST', '/score', {scoreType: league.scoreType, score, date, leagueId: league.id, leagueUserId: getLeagueUserId()}).then(() => {onSave(); handleClose()});
+
+      function createScore() {
+        const time = new Date();
+          time.setHours(0, parseInt(min), parseInt(sec));
+          console.log(format(time, FORMAT_TIME_SCORE));
+          debugger;
+          return (format(time, FORMAT_TIME_SCORE));
+      }
+        const scoreToSend = isTimeScore ? createScore() : score;
+        doFetch('POST', '/score', {scoreType: league.scoreType, score: scoreToSend, date, leagueId: league.id, leagueUserId: getLeagueUserId()}).then(() => {onSave(); handleClose()});
     }
     
-    const ScoreInput = () => {
-      function createScore(minutes, seconds) {
-        setMin(minutes ?? min);
-        setSec(seconds ?? sec);
-        const time = new Date();
-        if ((!!min || minutes) && (!!sec || seconds)) {
-          time.setHours(0, parseInt(minutes ?? min), parseInt(seconds ?? sec));
-          console.log(format(time, FORMAT_TIME_SCORE));
-          setScore(format(time, FORMAT_TIME_SCORE));
-        }
-      }
+      function makeScoreInput() {
       if (isTimeScore) {
         return (
           <TimeScoreRow>
@@ -60,13 +58,13 @@ const AddScoreModal = ({ open, handleClickOpen, handleClose, onSave, league }) =
                 {...commonProps}
                 label="Minutes"
                 value={min || ''}
-                onChange={(event) => createScore(event.target.value, null)}>
+                onChange={(event) => setMin(event.target.value)}>
             </TextField> 
             <TextField
                 {...commonProps}
                 label="Seconds"
                 value={sec || ''}
-                onChange={(event) => createScore(null, event.target.value)}>
+                onChange={(event) => setSec(event.target.value)}>
             </TextField> 
           </TimeScoreRow>
         ) 
@@ -105,7 +103,7 @@ const AddScoreModal = ({ open, handleClickOpen, handleClose, onSave, league }) =
               onChange={(event) => setDate(event.target.value)}
               >
               </TextField>       
-            <ScoreInput/>
+            {makeScoreInput()}
         </FieldContainer>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

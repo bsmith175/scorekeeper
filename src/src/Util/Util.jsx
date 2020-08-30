@@ -70,7 +70,7 @@ export async function doFetch(method, endpoint, body) {
    return dates;
   }
 
-
+//returns foramtted date without adjusting for time zone (date-fns does this automatically)
 export function formatIgnoreTimeZone(date, formatString) {
   const dateNew = new Date(date.valueOf() + date.getTimezoneOffset() * 60 * 1000);
   return format(dateNew, formatString);

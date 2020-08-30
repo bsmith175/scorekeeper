@@ -20,7 +20,6 @@ const ScoreTable = ({ league }) => {
     const dateMap = getAllDatesWithScore(league, comparator);
     const borderWidth = `${COLUMN_WIDTH * (1 + dateMap.size)}px`; 
     const dates = Array.from(dateMap.keys()).sort((a, b) => compareAsc(new Date(b), new Date(a)));
-    console.log(dateMap);
     const Header = () => (
         <RowContainer>
             <RowSection key='1'>
