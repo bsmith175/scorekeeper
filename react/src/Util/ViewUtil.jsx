@@ -38,4 +38,8 @@ export const ThinBorder = styled.div`
     width: ${p => p.width ? p.width : null};
 `;
 
+export const ButtonContainer = styled.div`
+    margin: 8px;
+    width: 200px;
+`;
 export const PreviewCard = withHover(PreviewCardInternal);
