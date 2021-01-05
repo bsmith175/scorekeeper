@@ -10,7 +10,7 @@
     "dotenv": "8.1.0",
     "epilogue": "0.7.1",
     "express": "4.16.3",
-    "sequelize": "4.44.3",
+    "sequelize": "5.15.1",
     "sqlite3": "4.1.0",
     "npm-run-all": "4.1.3"
   },
