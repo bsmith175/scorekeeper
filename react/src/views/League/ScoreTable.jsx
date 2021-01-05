@@ -4,7 +4,6 @@ import { Link, Redirect, useParams } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { H2, ScrollBox, ThinBorder } from '../../Util/ViewUtil';
 import StandardText from '../../components/shared/StandardText';
-import AddMemberModal from '../Modals/AddMemberModal';
 import useQuery from '../../components/Hooks/useQuery';
 import Card from '../../components/shared/Card';
 import { getAllDatesWithScore, formatIgnoreTimeZone, scoreTypes, parseScore, scoreComparator } from '../../Util/Util';
@@ -14,25 +13,28 @@ import { parseISO } from 'date-fns/esm';
 
 const ROW_HEIGHT = '20';
 const COLUMN_WIDTH = '90';
-const TABLE_WIDTH = '400';
-const ScoreTable = ({ league }) => {
-    const comparator = scoreComparator(league.scoreDirectionUp, league.scoreType);
-    const dateMap = getAllDatesWithScore(league, comparator);
-    const borderWidth = `${COLUMN_WIDTH * (1 + dateMap.size)}px`; 
-    const dates = Array.from(dateMap.keys()).sort((a, b) => compareAsc(new Date(b), new Date(a)));
+const TABLE_WIDTH = '420';
+const ScoreTable = ({ league, dateMap, dates }) => {
+    const borderWidth = `${Math.max(TABLE_WIDTH, COLUMN_WIDTH * (1 + dateMap.size))}px`; 
     const Header = () => (
-        <RowContainer>
-            <RowSection key='1'>
-                <StandardText>Name</StandardText>
-            </RowSection>            
-            {dates.map((date) => {
-                return (
-                <RowSection key={date}>
-                    <StandardText color={theme.gray50}>{formatIgnoreTimeZone(parseISO(date), 'MMM d')}</StandardText>
-                </RowSection>)
-            })}
-        </RowContainer>
+        <>
+            <RowContainer>
+                <H2>Scoreboard</H2>
+            </RowContainer>
+            <RowContainer>
+                <RowSection key='1'>
+                    <StandardText>Name</StandardText>
+                </RowSection>            
+                {dates.map((date) => {
+                    return (
+                    <RowSection key={date}>
+                        <StandardText color={theme.gray50}>{formatIgnoreTimeZone(parseISO(date), 'MMM d')}</StandardText>
+                    </RowSection>)
+                })}
+            </RowContainer>
+        </>
     );
+
     function makeUserRows() {
         return (
             league.leagueUsers.map((leagueUser) => (
@@ -55,7 +57,7 @@ const ScoreTable = ({ league }) => {
         )
     }
     return (dateMap &&
-        <Container height='200px' width={`${TABLE_WIDTH}px`}>
+        <Container height='400px' width={`${TABLE_WIDTH}px`}>
             <ScrollBox>
                     <Header/>
                     <ThinBorder width={borderWidth}/>

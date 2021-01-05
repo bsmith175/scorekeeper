@@ -46,7 +46,7 @@ const LeagueUser = database.define('leagueUser', {
 
 });
 
-LeagueUser.hasMany(Score);
+LeagueUser.hasMany(Score, {onDelete: 'CASCADE'});
 Score.belongsTo(LeagueUser);
 
 User.hasMany(LeagueUser);
@@ -71,7 +71,7 @@ const League = database.define('league', {
 
 });
 
-League.hasMany(LeagueUser);
+League.hasMany(LeagueUser, {onDelete: 'CASCADE'});
 LeagueUser.belongsTo(League);
 
 exports.League = League;

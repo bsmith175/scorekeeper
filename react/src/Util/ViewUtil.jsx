@@ -14,6 +14,10 @@ export const H2 = styled(StandardText)`
     font-weight: 400;
     color: ${p => p.color};
 `;
+export const ButtonText = styled(StandardText)`
+    font-size: 14px;
+    font-weight: 600;
+`;
 
 export const ScrollBox = styled.div`
     overflow: scroll;

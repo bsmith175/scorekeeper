@@ -12,8 +12,8 @@ const App = () => {
 
   const {data, loading, error, reQuery} = useQuery('/leagues');
 
-  function renderPreviewDisplay() {
-
+  function renderPreviewDisplay(props) {
+    if (props.refresh) reQuery();
     if (error) {
       return <H2>Error</H2>;
     }
@@ -23,8 +23,8 @@ const App = () => {
     return data && <PreviewDisplay data={data} getData={() => reQuery()}/>
   }
 
-  function renderLeaguePage() {
-    return <LeaguePage data={data}/>
+   function renderLeaguePage() {
+    return data && <LeaguePage data={data}/>;
   }
 
   return (<React.Fragment>

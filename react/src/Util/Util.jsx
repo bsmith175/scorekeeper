@@ -1,11 +1,11 @@
 import { compareAsc, format } from "date-fns";
 
+
 export const FORMAT_TIME_SCORE = 'm ss';
 export const FORMAT_DATE = 'yyyy-MM-dd';
-
-// const API = process.env.REACT_APP_API || 'http://localhost:3001';
-const PORT = process.env.PORT || '3001';
-const API = 'https://crossword.herokuapp.com';
+const PORT = process.env.REACT_APP_PORT || '3001';
+const API =  process.env.NODE_ENV === 'production' ? 'https://crossword.herokuapp.com' 
+                                                   : `http://localhost:${PORT}`;
 
 export async function doFetch(method, endpoint, body) {
     try {
@@ -27,7 +27,6 @@ export async function doFetch(method, endpoint, body) {
   //number otherwise
   export const scoreComparator = ((scoreDirectionUp, scoreType) => {
     return function(score1, score2) {
-      debugger;
       if (scoreType === scoreTypes.POINTS) {
         return scoreDirectionUp ? score1 - score2 :  score2 - score1;
       } else {
@@ -62,7 +61,6 @@ export async function doFetch(method, endpoint, body) {
           dates.set(score.date, userMap);
         } else {
           const bestScore = userMap.get(leagueUser.id);
-            debugger;
           if (!bestScore || comparator(score.value, bestScore.value) > 0) {
             userMap.set(leagueUser.id, score);
           }

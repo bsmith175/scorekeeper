@@ -23,10 +23,12 @@ const commonProps = {
 };
 
 const DeleteLeagueModal = ({ open, handleClose, onDelete, league }) => {
-     
-    async function handleSubmit() {
 
-        doFetch('DELETE', '/league', {id: league.id});
+    async function doDelete() {
+
+        doFetch('DELETE', `/leagues/${league.id}`);
+        onDelete();
+        handleClose();
     }
     
     return (
@@ -34,7 +36,7 @@ const DeleteLeagueModal = ({ open, handleClose, onDelete, league }) => {
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="add-member-dialog">Are you sure?</DialogTitle>
             <TextContainer>
-                <StandardText>The league will be permanently deleted and all associated 
+                <StandardText>The league will be permanently deleted and all saved 
                     scores will be lost.
                 </StandardText>
             </TextContainer>
@@ -45,7 +47,7 @@ const DeleteLeagueModal = ({ open, handleClose, onDelete, league }) => {
                 </Button>
             </ButtonContainer>
             <ButtonContainer>
-                <Button  variant='contained' color='secondary' onClick={() => onDelete()} >
+                <Button  variant='contained' color='secondary' onClick={() => doDelete()} >
                     <StandardText>Delete</StandardText>
                 </Button>
             </ButtonContainer>

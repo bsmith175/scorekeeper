@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '.env.local' });
+require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
@@ -12,11 +12,20 @@ app.use(cors());
 app.use(bodyParser.json());
 
 
-app.use(express.static(path.resolve(__dirname, '../react/build')));
 
 app.get('/leagues', async function (req, res) {
     const allLeagues = await League.findAll({include: {all: true, nested: true}});
     res.send(JSON.stringify(allLeagues));
+ })
+
+ app.delete('/leagues/:id', async function (req, res) {
+   const { id } = req.params;
+   await League.destroy({
+    where: {
+      id: id,
+    }
+  });
+
  })
 
  app.get('/leagues/:id', async function (req, res) {
@@ -75,10 +84,12 @@ app.get('/leagues', async function (req, res) {
 
 const port = process.env.PORT || 3001;
 
-
-app.get('*', function(req, res) {
-  response.sendFile(path.resolve(__dirname, '../react/build', 'index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.resolve(__dirname, '../react/build')));
+  app.get('*', function(req, res) {
+    response.sendFile(path.resolve(__dirname, '../react/build', 'index.html'));
+  });
+}
 
 database.sync({alter: false}).then(() => {
   app.listen(port, () => {
