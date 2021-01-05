@@ -33,8 +33,6 @@ const LeaguePage = () => {
     const comparator = data && scoreComparator(data.scoreDirectionUp, data.scoreType);
     const dateMap = data && getAllDatesWithScore(data, comparator);
     const dates = data && Array.from(dateMap.keys()).sort((a, b) => compareAsc(new Date(b), new Date(a)));
-    console.log(dateMap)
-    console.log(dates)
     const today = new Date();
     const weekWins = {};
     const monthWins = {};
@@ -53,7 +51,6 @@ const LeaguePage = () => {
             for (const user of data.leagueUsers) {
                 if ( dateMap.get(date).has(user.id) && (!bestScore || (comparator(dateMap.get(date).get(user.id).value, bestScore) > 0))) {
                     
-                    console.log("adsfasdfasdf")
                     winner = user.id;
                     bestScore = dateMap.get(date).get(user.id).value;
                 }
@@ -67,9 +64,6 @@ const LeaguePage = () => {
             allTimeWins[winner]++;
         }
     }
-    console.log(allTimeWins);
-    console.log(weekWins);
-    console.log(monthWins);
     return (
         data && 
         <Container>

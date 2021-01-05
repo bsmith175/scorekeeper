@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Link, Redirect, useParams } from 'react-router-dom';
 import { Button } from '@material-ui/core';
-import { H2, ScrollBox, ThinBorder } from '../../Util/ViewUtil';
+import { H2, ScrollBox, ThinBorder, RowContainer } from '../../Util/ViewUtil';
 import StandardText from '../../components/shared/StandardText';
 import useQuery from '../../components/Hooks/useQuery';
 import Card from '../../components/shared/Card';
@@ -18,10 +18,10 @@ const ScoreTable = ({ league, dateMap, dates }) => {
     const borderWidth = `${Math.max(TABLE_WIDTH, COLUMN_WIDTH * (1 + dateMap.size))}px`; 
     const Header = () => (
         <>
-            <RowContainer>
+            <RowContainer hover={false}>
                 <H2>Scoreboard</H2>
             </RowContainer>
-            <RowContainer>
+            <RowContainer hover={false}>
                 <RowSection key='1'>
                     <StandardText>Name</StandardText>
                 </RowSection>            
@@ -38,8 +38,8 @@ const ScoreTable = ({ league, dateMap, dates }) => {
     function makeUserRows() {
         return (
             league.leagueUsers.map((leagueUser) => (
-               <React.Fragment key={leagueUser.id}> 
-                    <RowContainer>
+               <div key={leagueUser.id}> 
+                    <RowContainer width={borderWidth}>
                        <RowSection key={'name'}>
                             <StandardText>{leagueUser.user.firstName}</StandardText>  
                        </RowSection> 
@@ -52,7 +52,7 @@ const ScoreTable = ({ league, dateMap, dates }) => {
                    })}
                    </RowContainer>
                     <ThinBorder width={borderWidth}/>
-               </React.Fragment>
+               </div>
             ))
         )
     }
@@ -70,20 +70,9 @@ const ScoreTable = ({ league, dateMap, dates }) => {
 export default ScoreTable;
 
 const Container = styled(Card)`
-    padding-left: 8px;
     position: relative
 `;
 
-const RowContainer = styled.div`
-    height: ${ROW_HEIGHT}px;
-    position: relative;
-    left: 0;
-    right: 0;
-    display: flex;
-    flex: 0 0 auto;
-    padding-top: 8px;
-    padding-bottom: 8px;
-`
 const RowSection = styled.div`
    min-width: ${COLUMN_WIDTH}px;
 
