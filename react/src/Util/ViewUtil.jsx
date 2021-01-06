@@ -73,6 +73,7 @@ const RowContainerInternal = styled.div`
 
 export const RowSection = styled.div`
    min-width: ${p => p.minWidth ?? COLUMN_WIDTH}px;
+   margin: 0px 8px;
 `;
 const RowContainerBase = (props) => {
     if (props.zIndex != undefined) {
