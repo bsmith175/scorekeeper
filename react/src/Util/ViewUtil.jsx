@@ -5,7 +5,8 @@ import StandardText from '../components/shared/StandardText';
 import Card from '../components/shared/Card';
 import theme from './Theme';
 
-const ROW_HEIGHT = '20';
+export const COLUMN_WIDTH = '90';
+export const ROW_HEIGHT = '20';
 
 export const H1 = styled(StandardText)`
     font-size: 30px;
@@ -68,6 +69,10 @@ const RowContainerInternal = styled.div`
     padding-top: 8px;
     padding-bottom: 8px;
     background-color: ${p => p.hover ? theme.lightGray : 'transparent'};
+`;
+
+export const RowSection = styled.div`
+   min-width: ${p => p.minWidth ?? COLUMN_WIDTH}px;
 `;
 const RowContainerBase = (props) => {
     if (props.zIndex != undefined) {

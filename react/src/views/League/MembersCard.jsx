@@ -3,29 +3,30 @@ import styled from 'styled-components';
 import {RowSection, H2, ScrollBox, ThinBorder, RowContainer } from '../../Util/ViewUtil';
 import StandardText from '../../components/shared/StandardText';
 import Card from '../../components/shared/Card';
-import { formatIgnoreTimeZone, parseScore} from '../../Util/Util';
-import theme from '../../Util/Theme';
-import { parseISO } from 'date-fns/esm';
 
-const COLUMN_WIDTH = '90';
-const TABLE_WIDTH = '420';
-const ScoreTable = ({ league, dateMap, dates }) => {
-    const borderWidth = `${Math.max(TABLE_WIDTH, COLUMN_WIDTH * (1 + dateMap.size))}px`; 
+const COLUMN_WIDTH = '120';
+const TABLE_WIDTH = COLUMN_WIDTH * 4;
+
+//data is map with key: member id, value: list of best, worst, average scores
+const MembersCard = ({ league, data }) => {
     const Header = () => (
         <>
             <RowContainer hover={false}>
-                <H2>Scoreboard</H2>
+                <H2>Participants</H2>
             </RowContainer>
             <RowContainer hover={false}>
                 <RowSection key='1'>
                     <StandardText>Name</StandardText>
                 </RowSection>            
-                {dates.map((date) => {
-                    return (
-                    <RowSection key={date}>
-                        <StandardText color={theme.gray50}>{formatIgnoreTimeZone(parseISO(date), 'MMM d')}</StandardText>
-                    </RowSection>)
-                })}
+                <RowSection key='2'>
+                    <StandardText>All-time best</StandardText>
+                </RowSection>            
+                <RowSection key='3'>
+                    <StandardText>All-time worst</StandardText>
+                </RowSection>            
+                <RowSection key='4'>
+                    <StandardText>All-time average</StandardText>
+                </RowSection>            
             </RowContainer>
         </>
     );
@@ -34,35 +35,33 @@ const ScoreTable = ({ league, dateMap, dates }) => {
         return (
             league.leagueUsers.map((leagueUser) => (
                <div key={leagueUser.id}> 
-                    <RowContainer width={borderWidth}>
+                    <RowContainer width={TABLE_WIDTH}>
                        <RowSection key={'name'}>
                             <StandardText>{leagueUser.user.firstName}</StandardText>  
                        </RowSection> 
-                    {dates.map((date) => {
-                        return (
-                            <RowSection key={date}>
-                                <StandardText>{parseScore(dateMap.get(date).get(leagueUser.id)?.value) ?? '--'}</StandardText>
-                            </RowSection>
-                        )
-                   })}
+                       {data[leagueUser.id].map((val, ix) => (
+                           <RowSection key={ix}>
+                               <StandardText>{val}</StandardText>
+                           </RowSection>
+                       ))}
                    </RowContainer>
-                    <ThinBorder width={borderWidth}/>
+                    <ThinBorder width={TABLE_WIDTH}/>
                </div>
             ))
         )
     }
-    return (dateMap &&
+    return (data &&
         <Container height='400px' width={`${TABLE_WIDTH}px`}>
             <ScrollBox>
                     <Header/>
-                    <ThinBorder width={borderWidth}/>
+                    <ThinBorder width={TABLE_WIDTH}/>
                     {makeUserRows()}
             </ScrollBox>
         </Container>
     )
 }
 
-export default ScoreTable;
+export default MembersCard;
 
 const Container = styled(Card)`
     position: relative

@@ -1,18 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Link, Redirect, useParams } from 'react-router-dom';
-import { Button } from '@material-ui/core';
-import { ButtonText, H2, ScrollBox, ThinBorder, RowContainer} from '../../Util/ViewUtil';
+import {COLUMN_WIDTH, RowSection, ButtonText, H2, ScrollBox, ThinBorder, RowContainer} from '../../Util/ViewUtil';
 import StandardText from '../../components/shared/StandardText';
-import useQuery from '../../components/Hooks/useQuery';
 import Card from '../../components/shared/Card';
-import { getAllDatesWithScore, formatIgnoreTimeZone, scoreTypes, parseScore, scoreComparator } from '../../Util/Util';
 import theme from '../../Util/Theme';
-import { format, compareAsc } from 'date-fns';
-import { parseISO } from 'date-fns/esm';
 import withHover from '../../components/HOCs/withHover';
 
-const COLUMN_WIDTH = '90';
+
 const TABLE_WIDTH = COLUMN_WIDTH * 3;
 const TIME_PERIODS = ['This Week', 'This Month', 'All Time']
 
@@ -123,10 +117,7 @@ const SelectRowBase = styled.div`
     cursor: pointer;
 `;
 const SelectRow = withHover(SelectRowBase);
-const RowSection = styled.div`
-   min-width: ${COLUMN_WIDTH}px;
 
-`;
 const TimePeriodContainer = styled.div`
     display: flex;
     flex-direction: column;

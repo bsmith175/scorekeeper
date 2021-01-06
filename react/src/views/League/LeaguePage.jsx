@@ -1,19 +1,19 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Link, Redirect, useParams } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import { Button } from '@material-ui/core';
-import { H1, H2, ScrollBox, ButtonContainer } from '../../Util/ViewUtil';
+import { H1, H2, ButtonContainer } from '../../Util/ViewUtil';
 import StandardText from '../../components/shared/StandardText';
 import AddMemberModal from '../Modals/AddMemberModal';
 import AddScoreModal from '../Modals/AddScoreModal';
 import useQuery from '../../components/Hooks/useQuery';
-import Card from '../../components/shared/Card';
-import {formatIgnoreTimeZone, getAllDatesWithScore, scoreComparator } from '../../Util/Util';
+import {addScores, formatIgnoreTimeZone, getAllDatesWithScore, intToScore, parseScore, scoreComparator, scoreToInt } from '../../Util/Util';
 import ScoreTable from './ScoreTable';
 import {ThinBorder} from '../../Util/ViewUtil';
 import DeleteLeagueModal from '../Modals/DeleteLeagueModal';
 import { compareAsc, parseISO, isSameWeek, isSameMonth } from 'date-fns';
 import Leaderboard from './Leaderboard';
+import MembersCard from './MembersCard';
 
 const LeaguePage = () => {
 
@@ -64,6 +64,22 @@ const LeaguePage = () => {
             allTimeWins[winner]++;
         }
     }
+    const memberData = {};
+    if (data) {
+        for (const leagueUser of data.leagueUsers) {
+            let best = leagueUser.scores[0] ? leagueUser.scores[0].value : '--';
+            let worst = best;
+            let sum = leagueUser.scores[0] ? 0 : '--';
+            for (let score of leagueUser.scores) {
+                best = comparator(score.value, best) > 0 ? score.value: best;
+                worst = comparator(score.value, worst) < 0 ? score.value : worst;
+                sum += scoreToInt(score.value, data.scoreType);
+                console.log(sum);
+            }
+            const avg = leagueUser.scores[0] ? intToScore(Math.round(sum / leagueUser.scores.length)) : '--';
+            memberData[leagueUser.id] = [parseScore(best), parseScore(worst), parseScore(avg)];
+        }
+    }
     return (
         data && 
         <Container>
@@ -78,6 +94,7 @@ const LeaguePage = () => {
             <RowContainer>
                 <ScoreTable league={data} dateMap={dateMap} dates={dates}/>
                 <Leaderboard league={data} weekWins={weekWins} monthWins={monthWins} allTimeWins={allTimeWins}/>
+                <MembersCard league={data} data={memberData}/>
             </RowContainer>
             <RowContainer>
                 <ButtonContainer>
