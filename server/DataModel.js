@@ -29,7 +29,14 @@ const Score = database.define('score', {
         autoIncrement: true,
         primaryKey: true,
     },
-    date: Sequelize.DATE,
+    leagueUserId: {
+        type: Sequelize.INTEGER,
+    },
+    leagueId: Sequelize.INTEGER,
+    date: {
+        type: Sequelize.STRING,
+        unique: true,
+    }, 
     value: Sequelize.STRING,
     // either 'points or 'time'
     scoreType: Sequelize.STRING,

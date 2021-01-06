@@ -19,13 +19,13 @@ const MembersCard = ({ league, data }) => {
                     <StandardText>Name</StandardText>
                 </RowSection>            
                 <RowSection key='2'>
-                    <StandardText>All-time best</StandardText>
+                    <StandardText>Best score</StandardText>
                 </RowSection>            
                 <RowSection key='3'>
-                    <StandardText>All-time worst</StandardText>
+                    <StandardText>Worst score</StandardText>
                 </RowSection>            
                 <RowSection key='4'>
-                    <StandardText>All-time average</StandardText>
+                    <StandardText>Average score</StandardText>
                 </RowSection>            
             </RowContainer>
         </>

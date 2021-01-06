@@ -63,10 +63,16 @@ app.get('/leagues', async function (req, res) {
      console.log(leagueUserId);
      console.log(score);
      console.log(date);
-     const newScore = await Score.create({date, scoreType, value: score});
-     const user = await LeagueUser.find({where: {id: leagueUserId}});
-     await user.addScore(newScore);
-     res.send(JSON.stringify(newScore));
+     try {
+      await Score.destroy({where: {leagueUserId: leagueUserId, leagueId, date: date}});
+      const newScore = await Score.create({date, scoreType, leagueUserId, leagueId, value: score});
+      const user = await LeagueUser.find({where: {id: leagueUserId}});
+      console.log('got here')
+      await user.addScore(newScore);
+      res.send(JSON.stringify(newScore));
+     } catch (err) {
+       res.send(JSON.stringify(err));
+     }
 
  })
  
