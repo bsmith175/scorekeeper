@@ -9,7 +9,7 @@
     "date-fns": "^2.15.0",
     "dotenv": "8.1.0",
     "epilogue": "0.7.1",
-    "express": "4.16.3",
+    "express": "4.17.3",
     "sequelize": "4.44.3",
     "sqlite3": "4.1.0",
     "npm-run-all": "4.1.3"
